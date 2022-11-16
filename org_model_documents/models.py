@@ -6,7 +6,9 @@ import os
 
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.core.files.storage import FileSystemStorage
 from django.db import models
+from django.utils.text import slugify
 
 
 class DocumentManager(models.Manager):
@@ -28,14 +30,15 @@ def org_model_document_path(instance, filename):
 
     based on the content type and object_id
     """
-    if settings.ORG_MODEL_DOCUMENTS_MEDIA_ROOT:
-        return (
-            f"{settings.ORG_MODEL_DOCUMENTS_MEDIA_ROOT}"
-            + f"/org_model_documents/{instance.content_type}/{instance.object_id}/{filename}"
-        )
     return (
-        f"org_model_documents/{instance.content_type}/{instance.object_id}/{filename}"
+        f"org_model_documents/{slugify(instance.content_type.app_label)}/"
+        + f"{slugify(instance.content_type.model)}/{instance.object_id}/{filename}"
     )
+
+
+upload_protected_files_storage = FileSystemStorage(
+    location=settings.ORG_MODEL_DOCUMENTS_MEDIA_ROOT, base_url="/protected_media"
+)
 
 
 class Document(models.Model):
@@ -57,7 +60,12 @@ class Document(models.Model):
         help_text="Content type of the model.",
     )
 
-    _file = models.FileField(upload_to=org_model_document_path, null=False, blank=False)
+    _file = models.FileField(
+        storage=upload_protected_files_storage,
+        upload_to=org_model_document_path,
+        null=False,
+        blank=False,
+    )
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
 
