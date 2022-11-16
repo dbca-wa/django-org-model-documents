@@ -35,7 +35,7 @@ Quick start
 
     from org_model_documents.api import (
         DocumentCreateView,
-    )   
+    )
 
     from yourproject.permissions import IsInternal, etc..
 
