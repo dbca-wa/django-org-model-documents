@@ -9,7 +9,6 @@ description = "A Django app to allow attaching any number of documents to any mo
 authors = ["Oak McIlwain <oak.mcilwain@dbca.wa.gov.au>"]
 maintainers = ["DBCA OIM <asi@dbca.wa.gov.au>"]
 license = "Apache-2.0"
-readme = "README.rst"
 
 packages = [
     { include = "org_model_documents" }
