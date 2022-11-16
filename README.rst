@@ -15,6 +15,13 @@ Quick start
         'org_model_documents',
     ]
 
+    Add the following variable to your settings file:
+
+    ORG_MODEL_DOCUMENTS_MEDIA_ROOT = "protected_media" # or other custom path
+
+    Run `python manage.py makemigrations` to generate the final migration.
+    Run `python manage.py migrate` to create the org_model_documents models.
+
 2. You can include the org_model_documents URLconf in your project urls.py like this:
 
     path('org-model-documents/', include('org_model_documents.urls')),
@@ -32,7 +39,7 @@ Quick start
 
     from yourproject.permissions import IsInternal, etc..
 
-    class DocumentCreateView(DocumentCreateView):
+    class YoueDocumentCreateView(DocumentCreateView):
         permission_classes = [IsInternal]
 
     Then create a url in your project that uses that view.
